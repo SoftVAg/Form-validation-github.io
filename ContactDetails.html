@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Form</title>
+     <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 40px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      max-width: 500px;
+      margin: auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+    <h2>Contact Details Form</h2>
+
+    <form onsubmit="return contactDetails()" action="PrefrencesForm.html" id="form-2" method="get">
+        <label for="Phone Number">Phone Number:</label><br>
+        <input type="number" id="PhoneNumber" name="Phone Number"><br><br>
+
+        <label for="Address">Address:</label><br>
+        <textarea id="address" name="address" rows="4" cols="30"></textarea><br><br>
+        
+        <label for="City">City</label><br>
+        <input type="text" id="City" name="City"><br><br>
+
+        <label for="age">Age:</label><br>
+        <input type="number" id="age" name="age" min="1"><br><br>
+
+        <label for="country">Country:</label><br>
+        <select id="country" name="country">
+        <option value="">--Select Country--</option>
+        <option value="india">India</option>
+        <option value="usa">United States</option>
+        <option value="uk">United Kingdom</option>
+        <option value="canada">Canada</option>
+        <option value="australia">Australia</option>
+        Add more countries as needed
+        </select><br><br>
+
+        <label for="PostalCode">Postal Code:</label><br>
+        <input type="number" id="postalCode" name="Postal Code" min="6"><br><br>
+
+        <button onclick="window.location.href='form1.html'">Previous</button>
+        <button onclick="window.location.href='form3.html'">Next</button>
+
+    </form>
+<script>
+    function contactDetails(){
+      var phoneNumber = document.getElementById("PhoneNumber").value;
+      var address = document.getElementById("address").value;
+      var city = document.getElementById("City").value;
+      var age = document.getElementById("age").value;
+      var country = document.getElementById("country").value;
+      var postalCode = document.getElementById("postalCode").value;
+
+      if(phoneNumber==""|| address==""|| city==""|| age==""|| country==""|| postalCode==""){
+        alert("all fields are mandatory")
+        return false;
+      }
+      else if(phoneNumber.length!=10){
+        alert("Phone number should be of 10 digits");
+        return false;
+      }else if(postalCode.length<6){
+        alert("Invalid postal Code");
+        return false;
+      }
+      else{
+        true;
+      }
+      const contactData = {
+        phoneNumber,
+        address,
+        city,
+        age,
+        country,
+        postalCode
+      };
+
+      localStorage.setItem("form2Data", JSON.stringify(contactData));
+      window.location.href = "PrefrencesForm.html";
+      return false;
+    }
+</script>
+</body>
+</html>

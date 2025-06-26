@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Preferences</title>
+   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 40px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      margin-right: 5px;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h2>Preferences</h2>
+  <form onsubmit="return handlePreferencesSubmit()" id="form-3">
+    <label>Preferred Contact Method:</label><br>
+    <input type="radio" name="contact_method" value="Email" required> Email<br>
+    <input type="radio" name="contact_method" value="Phone"> Phone<br>
+    <input type="radio" name="contact_method" value="Post"> Post<br><br>
+
+    <label>Interests:</label><br>
+    <input type="checkbox" name="interests" value="Technology"> Technology<br>
+    <input type="checkbox" name="interests" value="Arts"> Arts<br>
+    <input type="checkbox" name="interests" value="Sports"> Sports<br>
+    <input type="checkbox" name="interests" value="Travel"> Travel<br>
+    <input type="checkbox" name="interests" value="Food"> Food<br>
+    <input type="checkbox" name="interests" value="Education"> Education<br><br>  
+
+    <label>Subscription Plan:</label><br>
+    <select id="plan" required>
+      <option value="">Select</option>
+      <option value="Free">Free</option>
+      <option value="Basic">Basic</option>
+      <option value="Premium">Premium</option>
+    </select><br><br>
+    
+
+    <button onclick="window.location.href='form2.html'">Previous</button>
+    <button onclick="window.location.href='form4.html'">Next</button>
+  </form>
+
+  <script>
+    function handlePreferencesSubmit() {
+      const method = document.querySelector('input[name="contact_method"]:checked');
+      const plan = document.getElementById("plan").value;
+      const interests = Array.from(document.querySelectorAll('input[name="interests"]:checked')).map(e => e.value);
+
+      if (!method || !plan || interests.length === 0) {
+        alert("All fields are required, and at least one interest must be selected.");
+        return false;
+      }
+
+      const prefData = {
+        preferred_contact: method.value,
+        interests,
+        subscription_plan: plan
+      };
+
+      localStorage.setItem("form3Data", JSON.stringify(prefData));
+      window.location.href = "additionals.html";
+      return false;
+    }
+  </script>
+</body>
+</html>

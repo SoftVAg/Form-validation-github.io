@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Additional Info</title>
+   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 40px;
+    }
+
+    h2, h3 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="file"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    input[type="checkbox"] {
+      margin-top: 10px;
+    }
+
+    input[type="submit"] {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    pre {
+      background-color: #eee;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+      max-width: 800px;
+      margin: 20px auto;
+    }
+
+    #imagePreview {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    #imagePreview img {
+      max-width: 200px;
+      border-radius: 6px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <h2>Additional Information</h2>
+
+  <form id="form-4" onsubmit="return handleFinalSubmit()">
+    <!-- Profile Bio -->
+    <label for="bio">Profile Bio (optional, max 500 characters):</label><br>
+    <textarea id="bio" name="bio" maxlength="500" rows="4" cols="50"></textarea><br><br>
+
+    <!-- Website URL -->
+    <label for="website">Website (optional, must be a valid URL):</label><br>
+    <input type="url" id="website" name="website"><br><br>
+
+    <!-- Profile Image -->
+    <label for="profileImage">Profile Image (optional, JPG/PNG, max 2MB):</label><br>
+    <input type="file" id="profileImage" name="profileImage" accept=".jpg,.jpeg,.png"><br><br>
+
+    <!-- Terms & Conditions -->
+    <input type="checkbox" id="terms" name="terms" required>
+    <label for="terms">I agree to the Terms & Conditions</label><br><br>
+
+    <input type="submit" value="Previous">
+  </form>
+
+  <h3>Collected Data (JSON):</h3>
+  <pre id="output"></pre>
+  <div id="imagePreview"></div>
+
+  <script>
+    function handleFinalSubmit() {
+      const bio = document.getElementById("bio").value.trim();
+      const website = document.getElementById("website").value.trim();
+      const imageInput = document.getElementById("profileImage");
+      const termsAccepted = document.getElementById("terms").checked;
+
+      if (!termsAccepted) {
+        alert("You must accept the Terms & Conditions.");
+        return false;
+      }
+
+      if (website && !isValidURL(website)) {
+        alert("Please enter a valid website URL.");
+        return false;
+      }
+
+      const file = imageInput.files[0];
+      let imageData = null;
+
+      if (file) {
+        const validTypes = ["image/jpeg", "image/png"];
+        if (!validTypes.includes(file.type)) {
+          alert("Only JPG or PNG images are allowed.");
+          return false;
+        }
+        if (file.size > 2 * 1024 * 1024) {
+          alert("Image must be less than 2MB.");
+          return false;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          imageData = e.target.result;
+          showFinalJSON(bio, website, imageData);
+        };
+        reader.readAsDataURL(file);
+
+        return false; // wait for image load
+      } else {
+        showFinalJSON(bio, website, imageData);
+        return false;
+      }
+    }
+
+    function isValidURL(url) {
+      try {
+        new URL(url);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function showFinalJSON(bio, website, imageData) {
+      const form1 = JSON.parse(localStorage.getItem("form1Data") || "{}");
+      const form2 = JSON.parse(localStorage.getItem("form2Data") || "{}");
+      const form3 = JSON.parse(localStorage.getItem("form3Data") || "{}");
+
+      const finalData = {
+        ...form1,
+        ...form2,
+        ...form3,
+        bio,
+        website,
+        profileImage: imageData ? "Included" : "None"
+      };
+
+      document.getElementById("output").textContent = JSON.stringify(finalData, null, 2);
+
+      // Show image preview if available
+      const previewContainer = document.getElementById("imagePreview");
+      previewContainer.innerHTML = ""; // clear old
+      if (imageData) {
+        const img = document.createElement("img");
+        img.src = imageData;
+        img.alt = "Profile Image";
+        img.style.maxWidth = "200px";
+        previewContainer.appendChild(img);
+      }
+    }
+  </script>
+</body>
+</html>

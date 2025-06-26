@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Form</title>
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 40px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      max-width: 400px;
+      margin: auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+      margin-top: 15px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    input[type="submit"] {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }</style>
+</head>
+<body>
+
+    <h2>Registration Form</h2>
+
+    <form onsubmit="return handleSubmit()" id="form-1">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"
+               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}"
+               title="Password must be at least 8 characters long and include uppercase, lowercase, number, and special character."><br><br>
+
+        <label for="confirm-password">Confirm Password:</label><br>
+        <input type="password" id="confirm-password" name="confirm_password"><br><br>
+
+        <label for="age">Age:</label><br>
+        <input type="number" id="age" name="age" min="1"><br><br>
+
+        <input type="submit" value="Next">
+    </form>
+
+    <script>
+      function handleSubmit() {
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirm-password").value;
+        const age = document.getElementById("age").value;
+
+        if (!name || !email || !password || !confirmPassword || !age) {
+          alert("All fields are mandatory");
+          return false;
+        }
+
+        if (password !== confirmPassword) {
+          alert("Passwords do not match");
+          return false;
+        }
+
+        // Create JSON object
+        const formData = {
+          name: name,
+          email: email,
+          password: password,
+          age: age
+        };
+
+        // Store JSON in localStorage
+        localStorage.setItem("form1Data", JSON.stringify(formData));
+
+        // Redirect to next page
+        window.location.href = "ContactDetails.html";
+        return false; // prevent default form submission
+      }
+    </script>
+
+</body>
+</html>
