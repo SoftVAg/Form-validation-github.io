@@ -104,13 +104,7 @@
         return false;
       }
 
-      const prefData = {
-        preferred_contact: method.value,
-        interests,
-        subscription_plan: plan
-      };
-
-      localStorage.setItem("form3Data", JSON.stringify(prefData));
+     
       window.location.href = "additionals.html";
       return false;
     }
