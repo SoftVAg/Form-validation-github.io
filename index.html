@@ -100,17 +100,6 @@
           return false;
         }
 
-        // Create JSON object
-        const formData = {
-          name: name,
-          email: email,
-          password: password,
-          age: age
-        };
-
-        // Store JSON in localStorage
-        localStorage.setItem("form1Data", JSON.stringify(formData));
-
         // Redirect to next page
         window.location.href = "ContactDetails.html";
         return false; // prevent default form submission
